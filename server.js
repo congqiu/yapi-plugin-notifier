@@ -1,5 +1,5 @@
-
 const yapi =require('yapi.js');
+const notifier = require('./controllers/notifier');
 
 module.exports = function(options){
   const originalSaveLog = this.commons.saveLog;
@@ -20,7 +20,23 @@ module.exports = function(options){
   }
 
   this.bindHook('add_router', function(addRouter){
-    
-  })
-
+    addRouter({
+      controller: notifier,
+      method: 'get',
+      path: 'fine/notifier',
+      action: 'getNotifiers'
+    });
+    addRouter({
+      controller: notifier,
+      method: 'post',
+      path: 'fine/notifier/save',
+      action: 'saveNotifier'
+    });
+    addRouter({
+      controller: notifier,
+      method: 'post',
+      path: 'fine/notifier/del',
+      action: 'delNotifier'
+    });
+  });
 }

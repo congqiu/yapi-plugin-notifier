@@ -21,13 +21,30 @@ class notifierModel extends baseModel {
         default: true
       },
 
+      // 名称
+      notifier_name: {
+        type: String,
+        required: true
+      },
+
+      // 签名
       signature: String,
 
+      // 通知范围
+      scope: {
+        type: String,
+        default: "saveLog",
+        enmu: ["saveLog"]
+      },
+
+      // 通知类型
       type: {
         type: String,
         default: "ww",
         enmu: ["ww", "dingding", "webhook"]
       },
+
+      // 地址
       hook: String,
 
       add_time: Number,
@@ -53,8 +70,8 @@ class notifierModel extends baseModel {
     return this.model.findOne({ _id: id });
   }
 
-  findByName(name) {
-    return this.model.findOne({ plan_name: name });
+  findByName(name, project_id) {
+    return this.model.findOne({ plan_name: name, project_id });
   }
 
   findByProject(id) {
@@ -74,6 +91,10 @@ class notifierModel extends baseModel {
       },
       data
     );
+  }
+
+  findOneAndUpdate(condition, data) {
+    return this.model.findOneAndUpdate(condition, data, {upsert: true, new: true, setDefaultsOnInsert: true});
   }
 
   del(id) {
