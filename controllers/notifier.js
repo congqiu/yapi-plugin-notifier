@@ -1,6 +1,7 @@
 const baseController = require('controllers/base.js');
-const notifierModel = require('../models/notifier');
 const yapi = require('yapi.js');
+const notifierModel = require('../models/notifier');
+const { TYPE } = require("../utils/const");
 
 class notifierController extends baseController {
   constructor(ctx) {
@@ -44,7 +45,7 @@ class notifierController extends baseController {
       return (ctx.body = yapi.commons.resReturn(null, 400, '通知地址不能为空'));
     }
 
-    if (params.type !== "ww") {
+    if (!Object.values(TYPE).includes(params.type)) {
       return (ctx.body = yapi.commons.resReturn(null, 400, '通知类型不支持'));
     }
 

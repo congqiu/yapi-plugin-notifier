@@ -5,7 +5,9 @@ yapi-plugin-notifier
 
 ## 功能
 
+- [x] webhook
 - [x] 企业微信机器人
+- [x] 钉钉机器人
 
 ## 安装
 

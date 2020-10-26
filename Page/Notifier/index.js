@@ -141,6 +141,8 @@ export default class Add extends Component {
               })(
                 <Radio.Group onChange={this.onTypeChange}>
                   <Radio value={"ww"}>企业微信</Radio>
+                  <Radio value={"dingtalk"}>钉钉</Radio>
+                  <Radio value={"webhook"}>webhook</Radio>
                 </Radio.Group>
               )}
             </FormItem>

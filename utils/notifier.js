@@ -2,6 +2,7 @@ const yapi = require('yapi.js');
 const TurndownService = require('turndown');
 const notifierModel = require('../models/notifier');
 const tools = require('./tools');
+const { TYPE } = require("./const");
 
 class Notifier {
   constructor(message, config) {
@@ -45,8 +46,14 @@ class Notifier {
     }
     content = notifier.signature ? `【${notifier.signature}】${content}` : content;
     switch (notifier.type) {
-      case 'ww':
+      case TYPE.WW:
         await tools.sendWWMessage(notifier.hook, content);
+        break;
+      case TYPE.DINGTALK:
+        await tools.sendDingTalk(notifier.hook, `来自【${notifier.notifier_name}】的新通知`, content);
+        break;
+      case TYPE.WEBHOOK:
+        await tools.sendWebhook(notifier.hook, content, this.message);
         break;
       default:
         yapi.commons.log('yapi-plugin-notifier: 不支持的通知类型' + notifier.type);

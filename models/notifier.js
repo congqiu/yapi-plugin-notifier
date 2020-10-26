@@ -1,5 +1,6 @@
 const yapi = require('yapi.js');
 const baseModel = require('models/base.js');
+const { TYPE } = require("../utils/const");
 
 class notifierModel extends baseModel {
   getName() {
@@ -40,8 +41,8 @@ class notifierModel extends baseModel {
       // 通知类型
       type: {
         type: String,
-        default: "ww",
-        enmu: ["ww", "dingding", "webhook"]
+        default: TYPE.WW,
+        enmu: Object.values(TYPE)
       },
 
       // 地址
