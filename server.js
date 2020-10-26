@@ -1,7 +1,8 @@
 const yapi =require('yapi.js');
-const notifier = require('./controllers/notifier');
+const notifierController = require('./controllers/notifier');
+const notifier = require('./utils/notifier');
 
-module.exports = function(options){
+module.exports = function(options={}){
   const originalSaveLog = this.commons.saveLog;
 
   this.commons.saveLog = function() {
@@ -9,10 +10,9 @@ module.exports = function(options){
     originalSaveLog.apply(this, args);
 
     try {
-      yapi.commons.log('yapi-plugin-notifier: 开始运行');
       const logData = args[0];
-      if (!logData || logData.type != 'project') {
-        return;
+      if (logData && logData.type === 'project') {
+        new notifier(logData, options).send();
       }
     } catch(err) {
       yapi.commons.log(err, 'error');
@@ -21,19 +21,19 @@ module.exports = function(options){
 
   this.bindHook('add_router', function(addRouter){
     addRouter({
-      controller: notifier,
+      controller: notifierController,
       method: 'get',
       path: 'fine/notifier',
       action: 'getNotifiers'
     });
     addRouter({
-      controller: notifier,
+      controller: notifierController,
       method: 'post',
       path: 'fine/notifier/save',
       action: 'saveNotifier'
     });
     addRouter({
-      controller: notifier,
+      controller: notifierController,
       method: 'post',
       path: 'fine/notifier/del',
       action: 'delNotifier'

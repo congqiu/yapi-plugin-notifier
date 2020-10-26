@@ -6,9 +6,6 @@ import axios from 'axios';
 
 import AddContent from "./Notifier";
 
-import './index.scss';
-
-
 export default class Notifier extends Component {
   static propTypes = {
     projectId: PropTypes.number
@@ -78,7 +75,7 @@ export default class Notifier extends Component {
     });
     let delHook = hooks.find((val, index) => index === key);
     this.handleClick(0, currHooks[0], currHooks);
-    delHook._id && await axios.post("/api/plugin/fine/notifier/del?id=" + delHook._id);
+    delHook._id && await axios.post(`/api/plugin/fine/notifier/del?id=${delHook._id}&project_id=${this.props.projectId}`);
   }
 
   enterItem = key => {
@@ -146,7 +143,7 @@ export default class Notifier extends Component {
               {item.notifier_name}
             </span>
             <Popconfirm
-              title="确认删除此测试计划?"
+              title="确认删除此通知?"
               onConfirm={e => {
                 e.stopPropagation();
                 this.delParams(index);
@@ -195,7 +192,6 @@ export default class Notifier extends Component {
               <Tabs tabPosition="top">
                 <Tabs.TabPane tab={
                   <span>
-                    <Icon type="schedule" />
                     通知设置
                   </span>
                   }

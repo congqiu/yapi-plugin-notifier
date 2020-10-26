@@ -1,9 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Form, Switch, Button, Input, Radio } from "antd";
+import { Form, Switch, Button, Input, Radio, Tooltip, Icon } from "antd";
 const FormItem = Form.Item;
-
-import "./index.scss"
 
 // layout
 const formItemLayout = {
@@ -27,7 +25,6 @@ const tailFormItemLayout = {
     }
   }
 };
-
 
 @Form.create()
 export default class Add extends Component {
@@ -163,6 +160,20 @@ export default class Add extends Component {
                 ],
                 validateTrigger: "onBlur",
                 initialValue: this.state.notifier_data.hook
+              })(<Input />)}
+            </FormItem>
+
+            <FormItem {...formItemLayout}
+              label={
+                <span>
+                  通知签名&nbsp;
+                  <Tooltip title="配置后消息形式为：【签名】消息内容">
+                    <Icon type="question-circle-o" />
+                  </Tooltip>
+                </span>
+              }>
+              {getFieldDecorator("signature", {
+                initialValue: this.state.notifier_data.signature
               })(<Input />)}
             </FormItem>
           </div>

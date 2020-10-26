@@ -98,7 +98,7 @@ class notifierModel extends baseModel {
   }
 
   del(id) {
-    return this.model.remove({
+    return this.model.deleteOne({
       _id: id
     });
   }

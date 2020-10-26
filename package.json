@@ -13,7 +13,13 @@
   "bugs": {
     "url": "https://github.com/congqiu/yapi-plugin-notifier/issues"
   },
-  "keywords": ["yapi-plugin", "notifier", "webhook", "dingding", "weixin", "ww"],
+  "keywords": ["yapi-plugin", "notifier", "weixin", "ww"],
   "author": "congqiu",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "turndown": "^7.0.0"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  }
 }

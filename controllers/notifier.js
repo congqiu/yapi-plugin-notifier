@@ -12,6 +12,9 @@ class notifierController extends baseController {
   async getNotifiers(ctx) {
     try {
       const projectId = ctx.params.project_id;
+      if ((await this.checkAuth(projectId, 'project', 'view')) !== true) {
+        return (ctx.body = yapi.commons.resReturn(null, 406, '没有权限'));
+      }
       let notifiers = await this.notifierModel.findByProject(projectId)
       ctx.body = yapi.commons.resReturn(notifiers);
     } catch (e) {
@@ -25,8 +28,13 @@ class notifierController extends baseController {
     params = yapi.commons.handleParams(params, {
       notifier_name: 'string',
       hook: 'string',
-      type: 'string'
+      type: 'string',
+      signature: 'string'
     });
+
+    if ((await this.checkAuth(params.project_id, 'project', 'edit')) !== true) {
+      return (ctx.body = yapi.commons.resReturn(null, 405, '没有权限编辑'));
+    }
 
     if (!params.notifier_name) {
       return (ctx.body = yapi.commons.resReturn(null, 400, '通知名不能为空'));
@@ -53,6 +61,7 @@ class notifierController extends baseController {
         open: params.open,
         hook: params.hook,
         type: params.type,
+        signature: params.signature,
         uid: this.getUid()
       }
       let notifier;
@@ -74,6 +83,10 @@ class notifierController extends baseController {
 
       if (!id) {
         return (ctx.body = yapi.commons.resReturn(null, 400, 'id不能为空'));
+      }
+
+      if ((await this.checkAuth(ctx.params.project_id, 'project', 'edit')) !== true) {
+        return (ctx.body = yapi.commons.resReturn(null, 405, '没有权限删除'));
       }
 
       let result = await this.notifierModel.del(id)
