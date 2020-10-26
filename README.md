@@ -1,13 +1,15 @@
 yapi-plugin-notifier
 ===
 
-自定义通知机器人，支持企业微信通知。使用过程中如果碰到任何bug或有任何好的的建议欢迎issue。
+自定义通知机器人，支持多种类型通知。使用过程中如果碰到任何bug或有任何好的的建议欢迎issue。
 
 ## 功能
 
-- [x] webhook
-- [x] 企业微信机器人
-- [x] 钉钉机器人
+- [x] 支持webhook
+- [x] 支持企业微信机器人
+- [x] 支持钉钉机器人
+- [x] 支持签名密钥更安全（企业微信不支持）
+- [ ] 其他机器人
 
 ## 安装
 
@@ -32,7 +34,7 @@ yapi-plugin-notifier
 ## 使用
 
 ![配置](./screenshot/setting.png)
-在每个项目的设置处新增通知设置，根据需求选择相应的配置。
+在每个项目的设置处新增通知设置，根据需求选择相应的配置，直接在通知地址处输入机器人地址或者webhook的url即可。
 
 ## 更新
 
@@ -47,5 +49,6 @@ yapi-plugin-notifier
 ## 注意事项
 
 1. 企业微信每个机器人发送的消息不能超过20条/分钟，最新内容参考[消息发送频率限制](https://work.weixin.qq.com/api/doc/90000/90136/91770#%E6%B6%88%E6%81%AF%E5%8F%91%E9%80%81%E9%A2%91%E7%8E%87%E9%99%90%E5%88%B6)，建议在配置短时间频繁更改的情况下关闭通知的开关。
+2. 钉钉每个机器人每分钟最多发送20条，参考[消息发送频率限制](https://ding-doc.dingtalk.com/doc#/serverapi2/qf2nxq)。
 
 感谢[https://github.com/zgs225/yapi-plugin-dding](https://github.com/zgs225/yapi-plugin-dding)提供的参考，一个受欢迎的钉钉机器人推送插件。

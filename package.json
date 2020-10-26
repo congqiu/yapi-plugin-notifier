@@ -1,7 +1,7 @@
 {
   "name": "yapi-plugin-notifier",
-  "version": "0.0.1",
-  "description": "自定义通知机器人，支持企业微信的通知。",
+  "version": "1.0.0",
+  "description": "自定义通知机器人，支持多种类型通知",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -13,7 +13,7 @@
   "bugs": {
     "url": "https://github.com/congqiu/yapi-plugin-notifier/issues"
   },
-  "keywords": ["yapi-plugin", "notifier", "weixin", "ww"],
+  "keywords": ["yapi-plugin", "notifier", "weixin", "wechat", "webhook", "dingding", "dingtalk"],
   "author": "congqiu",
   "license": "ISC",
   "dependencies": {

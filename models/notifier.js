@@ -28,7 +28,10 @@ class notifierModel extends baseModel {
         required: true
       },
 
-      // 签名
+      // 请求签名密钥
+      secret: String,
+
+      // 通知签名
       signature: String,
 
       // 通知范围

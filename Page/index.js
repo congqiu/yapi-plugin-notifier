@@ -62,7 +62,7 @@ export default class Notifier extends Component {
       message.error("请先保存当前新建的通知！");
       return;
     }
-    let data = { _id: 0, notifier_name: "通知" + Math.random().toString(36).substr(2, 3), project_id: this.props.projectId, open: true, type: "ww" };
+    let data = { _id: 0, notifier_name: "通知" + Math.random().toString(36).substr(2, 3), project_id: this.props.projectId, open: true };
     let hooks = [].concat(data, this.state.hooks);
     this.handleClick(0, data, hooks);
   };

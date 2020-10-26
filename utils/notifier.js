@@ -45,18 +45,20 @@ class Notifier {
       return;
     }
     content = notifier.signature ? `【${notifier.signature}】${content}` : content;
+
+    const timestamp = new Date().getTime();
+    let url = notifier.secret ? `${notifier.hook}&timestamp=${timestamp}&sign=${tools.sign(notifier.secret, timestamp)}` : notifier.hook;
+
     switch (notifier.type) {
       case TYPE.WW:
         await tools.sendWWMessage(notifier.hook, content);
         break;
       case TYPE.DINGTALK:
-        await tools.sendDingTalk(notifier.hook, `来自【${notifier.notifier_name}】的新通知`, content);
+        await tools.sendDingTalk(url, `来自【${notifier.notifier_name}】的新通知`, content);
         break;
       case TYPE.WEBHOOK:
-        await tools.sendWebhook(notifier.hook, content, this.message);
-        break;
       default:
-        yapi.commons.log('yapi-plugin-notifier: 不支持的通知类型' + notifier.type);
+        await tools.sendWebhook(url, content, this.message);
         break;
     }
   }

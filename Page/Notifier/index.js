@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Form, Switch, Button, Input, Radio, Tooltip, Icon } from "antd";
+import { Form, Switch, Button, Input, Tooltip, Icon } from "antd";
 const FormItem = Form.Item;
 
 // layout
@@ -68,14 +68,6 @@ export default class Add extends Component {
     });
   }
 
-  onTypeChange = v => {
-    let notifier_data = this.state.notifier_data;
-    notifier_data.type = v;
-    this.setState({
-      notifier_data: notifier_data
-    });
-  }
-
   render() {
     const { notifierNames } = this.props;
     const { getFieldDecorator } = this.props.form;
@@ -126,31 +118,10 @@ export default class Add extends Component {
             <FormItem {...formItemLayout}
               label={
                 <span>
-                  通知类型
-                </span>
-              }>
-              {getFieldDecorator("type", {
-                rules: [
-                  {
-                    required: true,
-                    message: "请输入通知地址"
-                  }
-                ],
-                validateTrigger: "onBlur",
-                initialValue: this.state.notifier_data.type
-              })(
-                <Radio.Group onChange={this.onTypeChange}>
-                  <Radio value={"ww"}>企业微信</Radio>
-                  <Radio value={"dingtalk"}>钉钉</Radio>
-                  <Radio value={"webhook"}>webhook</Radio>
-                </Radio.Group>
-              )}
-            </FormItem>
-
-            <FormItem {...formItemLayout}
-              label={
-                <span>
-                  通知地址
+                  通知地址&nbsp;
+                  <Tooltip title="支持企业微信、钉钉以及自定义webhook的地址">
+                    <Icon type="question-circle-o" />
+                  </Tooltip>
                 </span>
               }>
               {getFieldDecorator("hook", {
@@ -176,6 +147,21 @@ export default class Add extends Component {
               }>
               {getFieldDecorator("signature", {
                 initialValue: this.state.notifier_data.signature
+              })(<Input />)}
+            </FormItem>
+
+            <FormItem {...formItemLayout}
+              label={
+                <span>
+                  请求密钥
+                  &nbsp;<a href="https://ding-doc.dingtalk.com/doc#/serverapi2/qf2nxq/uKPlK">文档</a>&nbsp;
+                  <Tooltip title="参考钉钉机器人安全设置的加签文档，设置后会在url上拼接&timestamp=XXX&sign=XXX">
+                    <Icon type="question-circle-o" />
+                  </Tooltip>
+                </span>
+              }>
+              {getFieldDecorator("secret", {
+                initialValue: this.state.notifier_data.secret
               })(<Input />)}
             </FormItem>
           </div>

@@ -1,6 +1,7 @@
 const baseController = require('controllers/base.js');
 const yapi = require('yapi.js');
 const notifierModel = require('../models/notifier');
+const tools = require("../utils/tools");
 const { TYPE } = require("../utils/const");
 
 class notifierController extends baseController {
@@ -30,7 +31,8 @@ class notifierController extends baseController {
       notifier_name: 'string',
       hook: 'string',
       type: 'string',
-      signature: 'string'
+      signature: 'string',
+      secret: 'string'
     });
 
     if ((await this.checkAuth(params.project_id, 'project', 'edit')) !== true) {
@@ -44,10 +46,13 @@ class notifierController extends baseController {
     if (!params.hook) {
       return (ctx.body = yapi.commons.resReturn(null, 400, '通知地址不能为空'));
     }
-
-    if (!Object.values(TYPE).includes(params.type)) {
-      return (ctx.body = yapi.commons.resReturn(null, 400, '通知类型不支持'));
+    if (params.hook.trim().indexOf("http") === -1) {
+      return (ctx.body = yapi.commons.resReturn(null, 400, '通知地址只支持http请求'));
     }
+
+    // if (!Object.values(TYPE).includes(params.type)) {
+    //   return (ctx.body = yapi.commons.resReturn(null, 400, '通知类型不支持'));
+    // }
 
     let checkRepeat = await this.notifierModel.findByName(params.notifier_name, params.project_id);
 
@@ -60,9 +65,10 @@ class notifierController extends baseController {
         project_id: params.project_id,
         notifier_name: params.notifier_name,
         open: params.open,
-        hook: params.hook,
-        type: params.type,
+        hook: encodeURI(params.hook),
+        type: tools.inferNotifierType(params.hook),
         signature: params.signature,
+        secret: params.secret,
         uid: this.getUid()
       }
       let notifier;
@@ -96,9 +102,7 @@ class notifierController extends baseController {
     } catch (e) {
       ctx.body = yapi.commons.resReturn(null, 402, e.message);
     }
-    
   }
-
 }
 
 module.exports = notifierController;
