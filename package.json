@@ -1,6 +1,6 @@
 {
   "name": "yapi-plugin-notifier",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "自定义通知机器人，支持多种类型通知",
   "main": "index.js",
   "scripts": {

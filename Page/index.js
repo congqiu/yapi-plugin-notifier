@@ -5,6 +5,7 @@ const { Content, Sider } = Layout;
 import axios from 'axios';
 
 import AddContent from "./Notifier";
+import './index.scss';
 
 export default class Notifier extends Component {
   static propTypes = {
@@ -138,8 +139,8 @@ export default class Notifier extends Component {
           onClick={() => this.handleClick(index, item)}
           onMouseEnter={() => this.enterItem(index)}
         >
-          <span className="test-icon-style">
-            <span className="test-name" style={{ color: !item._id && "#2395f1" }}>
+          <span className="notifier-icon-style">
+            <span className="notifier-name" style={{ color: !item._id && "#2395f1" }}>
               {item.notifier_name}
             </span>
             <Popconfirm
@@ -165,11 +166,11 @@ export default class Notifier extends Component {
     });
 
     return (
-      <div className="g-row">
-        <Layout className="auto-test-panel">
+      <div>
+        <Layout className="fine-notifier-panel">
           <Sider width={195} style={{ background: "#fff"}}>
             <Row className="hook-list-header menu-item">
-              <div className="test-icon-style">
+              <div className="notifier-icon-style">
                 <h3>
                   通知列表&nbsp;<Tooltip placement="top" title="在这里添加通知">
                     <Icon type="question-circle-o" />
@@ -180,11 +181,11 @@ export default class Notifier extends Component {
                 </Tooltip>
               </div>
             </Row>
-            <div className="test-slider">
+            <div className="notifier-slider">
               {hookSettingItems}
             </div>
           </Sider>
-          <Layout className="test-content">
+          <Layout className="notifier-content">
             <Content key={this.state.currentHook._id} style={{
                         display: hooks.length > 0 ? "block" : "none",
                         padding: "0 24 24 24"

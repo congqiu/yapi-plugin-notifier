@@ -119,7 +119,7 @@ export default class Add extends Component {
               label={
                 <span>
                   通知地址&nbsp;
-                  <Tooltip title="支持企业微信、钉钉以及自定义webhook的地址">
+                  <Tooltip title="直接复制企业微信、钉钉机器人完整地址或自定义webhook的地址">
                     <Icon type="question-circle-o" />
                   </Tooltip>
                 </span>
@@ -128,12 +128,12 @@ export default class Add extends Component {
                 rules: [
                   {
                     required: true,
-                    message: "请输入通知地址"
+                    message: "请输入通知 Webhook 地址"
                   }
                 ],
                 validateTrigger: "onBlur",
                 initialValue: this.state.notifier_data.hook
-              })(<Input />)}
+              })(<Input placeholder="企业微信、钉钉机器人完整地址或自定义webhook的地址" />)}
             </FormItem>
 
             <FormItem {...formItemLayout}
@@ -147,7 +147,7 @@ export default class Add extends Component {
               }>
               {getFieldDecorator("signature", {
                 initialValue: this.state.notifier_data.signature
-              })(<Input />)}
+              })(<Input placeholder="选填：拼接在消息之前的签名信息" />)}
             </FormItem>
 
             <FormItem {...formItemLayout}
@@ -162,7 +162,7 @@ export default class Add extends Component {
               }>
               {getFieldDecorator("secret", {
                 initialValue: this.state.notifier_data.secret
-              })(<Input />)}
+              })(<Input placeholder="选填：加签密钥，钉钉机器人和自定义webhook支持" />)}
             </FormItem>
           </div>
           <FormItem {...tailFormItemLayout}>
