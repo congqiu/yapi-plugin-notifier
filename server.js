@@ -38,5 +38,11 @@ module.exports = function(options={}){
       path: 'fine/notifier/del',
       action: 'delNotifier'
     });
+    addRouter({
+      controller: notifierController,
+      method: 'post',
+      path: 'fine/notifier/test',
+      action: 'testNotifier'
+    });
   });
 }

@@ -40,26 +40,36 @@ class Notifier {
     }
   }
 
+  async test(notifier) {
+    return await this.sender(notifier, `一条来自${notifier.notifier_name}的测试消息`);
+  }
+
   async sender(notifier, content) {
     if (!notifier.open) {
       return;
     }
-    content = notifier.signature ? `【${notifier.signature}】${content}` : content;
+    try {
+      content = notifier.signature ? `【${notifier.signature}】${content}` : content;
 
-    const timestamp = new Date().getTime();
-    let url = notifier.secret ? `${notifier.hook}&timestamp=${timestamp}&sign=${tools.sign(notifier.secret, timestamp)}` : notifier.hook;
+      const timestamp = new Date().getTime();
+      let url = notifier.secret ? `${notifier.hook}&timestamp=${timestamp}&sign=${tools.sign(notifier.secret, timestamp)}` : notifier.hook;
+      let res;
 
-    switch (notifier.type) {
-      case TYPE.WW:
-        await tools.sendWWMessage(notifier.hook, content);
-        break;
-      case TYPE.DINGTALK:
-        await tools.sendDingTalk(url, `来自【${notifier.notifier_name}】的新通知`, content);
-        break;
-      case TYPE.WEBHOOK:
-      default:
-        await tools.sendWebhook(url, content, this.message);
-        break;
+      switch (notifier.type) {
+        case TYPE.WW:
+          res = await tools.sendWWMessage(notifier.hook, content);
+          break;
+        case TYPE.DINGTALK:
+          res = await tools.sendDingTalk(url, `来自【${notifier.notifier_name}】的新通知`, content);
+          break;
+        case TYPE.WEBHOOK:
+        default:
+          res = await tools.sendWebhook(url, content, this.message);
+          break;
+      }
+      return res.data;
+    } catch (error) {
+      yapi.commons.log(error, "error");
     }
   }
 }

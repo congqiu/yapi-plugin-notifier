@@ -2,7 +2,7 @@ const baseController = require('controllers/base.js');
 const yapi = require('yapi.js');
 const notifierModel = require('../models/notifier');
 const tools = require("../utils/tools");
-const { TYPE } = require("../utils/const");
+const notifier = require("../utils/notifier");
 
 class notifierController extends baseController {
   constructor(ctx) {
@@ -97,6 +97,37 @@ class notifierController extends baseController {
       }
 
       let result = await this.notifierModel.del(id)
+
+      ctx.body = yapi.commons.resReturn(result);
+    } catch (e) {
+      ctx.body = yapi.commons.resReturn(null, 402, e.message);
+    }
+  }
+
+  async testNotifier(ctx) {
+    try {
+      let params = ctx.request.body;
+  
+      params = yapi.commons.handleParams(params, {
+        notifier_name: 'string',
+        hook: 'string',
+        type: 'string',
+        signature: 'string',
+        secret: 'string'
+      });
+  
+      if ((await this.checkAuth(params.project_id, 'project', 'view')) !== true) {
+        return (ctx.body = yapi.commons.resReturn(null, 405, '没有权限操作'));
+      }
+
+      let result = await new notifier({}, {}).test({
+        open: true,
+        notifier_name: params.notifier_name,
+        hook: encodeURI(params.hook),
+        type: tools.inferNotifierType(params.hook),
+        signature: params.signature,
+        secret: params.secret
+      });
 
       ctx.body = yapi.commons.resReturn(result);
     } catch (e) {

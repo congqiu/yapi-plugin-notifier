@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Form, Switch, Button, Input, Tooltip, Icon } from "antd";
+import { Form, Switch, Button, Input, Tooltip, Icon, message } from "antd";
+import axios from 'axios';
 const FormItem = Form.Item;
 
 // layout
@@ -58,6 +59,26 @@ export default class Add extends Component {
       }
     });
   };
+
+  handleTest = async () => {
+    const { form, notifier } = this.props;
+    let params = {
+      project_id: notifier.project_id
+    };
+    form.validateFields(async (err, values) => {
+      if (!err) {
+        let assignValue = Object.assign(params, values);
+        let result = await axios.post("/api/plugin/fine/notifier/test", assignValue);
+        if (result.data.errcode === 0 && result.data.data && result.data.data.errcode === 0) {
+          message.success("消息已发送");
+        } else if (result.data.errcode === 0 && result.data.data) {
+          message.error("发送失败：" + result.data.data.errmsg);
+        } else {
+          message.error("发送失败：" + result.data.errmsg);
+        }
+      }
+    });
+  }
 
   // 是否开启
   onChange = v => {
@@ -168,6 +189,9 @@ export default class Add extends Component {
           <FormItem {...tailFormItemLayout}>
             <Button type="primary" htmlType="submit" icon="save" size="large" onClick={this.handleSubmit}>
               保存
+            </Button>
+            <Button htmlType="submit" icon="poweroff" size="large" className="test-btn" onClick={this.handleTest}>
+              测试发送
             </Button>
           </FormItem>
         </Form>
