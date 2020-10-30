@@ -5,7 +5,7 @@ const tools = require('./tools');
 const { TYPE } = require("./const");
 
 class Notifier {
-  constructor(message, config) {
+  constructor(message = {}, config = {}) {
     this.message = message;
     this.config = config;
 
@@ -13,7 +13,7 @@ class Notifier {
   }
 
   async send() {
-    if (!this.message || !this.message.content || this.message.content.length === 0) {
+    if (!this.message.content || this.message.content.length === 0) {
       yapi.commons.log('yapi-plugin-notifier: 无通知内容');
       return;
     }
@@ -46,6 +46,9 @@ class Notifier {
 
   async sender(notifier, content) {
     if (!notifier.open) {
+      return;
+    }
+    if (notifier.whitelist && notifier.whitelist.length > 0 && !notifier.whitelist.some(v => content.indexOf(v) > -1)) {
       return;
     }
     try {

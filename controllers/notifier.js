@@ -69,6 +69,7 @@ class notifierController extends baseController {
         type: tools.inferNotifierType(params.hook),
         signature: params.signature,
         secret: params.secret,
+        whitelist: params.whitelist,
         uid: this.getUid()
       }
       let notifier;
@@ -120,6 +121,10 @@ class notifierController extends baseController {
         return (ctx.body = yapi.commons.resReturn(null, 405, '没有权限操作'));
       }
 
+      if (params.hook.trim().indexOf("http") === -1) {
+        return (ctx.body = yapi.commons.resReturn(null, 400, '通知地址只支持http请求'));
+      }
+
       let result = await new notifier({}, {}).test({
         open: true,
         notifier_name: params.notifier_name,
@@ -129,9 +134,9 @@ class notifierController extends baseController {
         secret: params.secret
       });
 
-      ctx.body = yapi.commons.resReturn(result);
+      ctx.body = yapi.commons.resReturn(result, result ? 0 : 400, result ? "发送成功" : "请检查相关参数");
     } catch (e) {
-      ctx.body = yapi.commons.resReturn(null, 402, e.message);
+      ctx.body = yapi.commons.resReturn(null, 401, e.message);
     }
   }
 }

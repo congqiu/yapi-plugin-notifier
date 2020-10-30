@@ -4,6 +4,8 @@ import { Form, Switch, Button, Input, Tooltip, Icon, message } from "antd";
 import axios from 'axios';
 const FormItem = Form.Item;
 
+import List from "./list";
+
 // layout
 const formItemLayout = {
   labelCol: {
@@ -46,11 +48,13 @@ export default class Add extends Component {
 
   handleSubmit = async () => {
     const { form, notifier, onSubmit } = this.props;
+    const { notifier_data } = this.state;
     let params = {
       id: notifier._id,
       project_id: notifier.project_id,
-      open: this.state.notifier_data.open,
-      hook: this.state.notifier_data.hook
+      open: notifier_data.open,
+      hook: notifier_data.hook,
+      whitelist: notifier_data.whitelist
     };
     form.validateFields(async (err, values) => {
       if (!err) {
@@ -84,6 +88,14 @@ export default class Add extends Component {
   onChange = v => {
     let notifier_data = this.state.notifier_data;
     notifier_data.open = v;
+    this.setState({
+      notifier_data: notifier_data
+    });
+  }
+
+  changeWhitelist = v => {
+    let notifier_data = this.state.notifier_data;
+    notifier_data.whitelist = v;
     this.setState({
       notifier_data: notifier_data
     });
@@ -184,6 +196,19 @@ export default class Add extends Component {
               {getFieldDecorator("secret", {
                 initialValue: this.state.notifier_data.secret
               })(<Input placeholder="选填：加签密钥，钉钉机器人和自定义webhook支持" />)}
+            </FormItem>
+
+            <FormItem {...formItemLayout}
+              label={
+                <span>
+                  白名单&nbsp;
+                  &nbsp;<a href="https://github.com/congqiu/yapi-plugin-notifier/blob/master/README.md#%E7%99%BD%E5%90%8D%E5%8D%95%E9%85%8D%E7%BD%AE">文档</a>&nbsp;
+                  <Tooltip title="设置后只有消息(markdown格式)中包含白名单中任意关键词才会推送，最多添加10个">
+                    <Icon type="question-circle-o" />
+                  </Tooltip>
+                </span>
+              }>
+              {(<List items={this.state.notifier_data.whitelist} changeItems={e => this.changeWhitelist(e)} />)}
             </FormItem>
           </div>
           <FormItem {...tailFormItemLayout}>

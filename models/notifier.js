@@ -51,6 +51,8 @@ class notifierModel extends baseModel {
       // 地址
       hook: String,
 
+      whitelist: [],
+
       add_time: Number,
       up_time: Number
     };
